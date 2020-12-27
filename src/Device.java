@@ -51,4 +51,5 @@ public class Device {
     public void setOpen(boolean open) {
         isOpen = open;
     }
+
 }

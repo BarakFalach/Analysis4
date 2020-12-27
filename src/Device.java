@@ -1,17 +1,21 @@
 import java.util.ArrayList;
 
 public class Device {
+    private String name;
     private int minWeight;
     private int minHeight;
     private int minAge;
     private boolean isOpen;
+    private float price;
     private final ArrayList<eTicket> eTickets;
 
-    public Device(int minWeight, int minHeight, int minAge, boolean isOpen) {
+    public Device(String name, int minWeight, int minHeight, int minAge, boolean isOpen, float price) {
+        this.name = name;
         this.minWeight = minWeight;
         this.minHeight = minHeight;
         this.minAge = minAge;
         this.isOpen = isOpen;
+        this.price = price;
         this.eTickets = new ArrayList<>();
     }
 
@@ -52,4 +56,11 @@ public class Device {
         isOpen = open;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public float getPrice() {
+        return this.price;
+    }
 }

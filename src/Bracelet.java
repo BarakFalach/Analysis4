@@ -1,0 +1,2 @@
+public class Bracelet {
+}

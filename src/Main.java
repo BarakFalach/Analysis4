@@ -2,18 +2,11 @@ import java.util.*;
 
 public class Main {
     public static List<Object> systemObjects = new LinkedList<>();
-    //public static eParkSystem system = new eParkSystem();
+    public static eParkSystem system = new eParkSystem();
     public static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
         String choise = null;
         do {
-            /*
-            System.out.println("Please press the requested option:");
-            System.out.println("1: Manage eTicket");
-            System.out.println("2: Ride a device");
-            System.out.println("3: Leave park");
-            System.out.println("0: Exit");
-             */
             System.out.println("Please press the requested option:");
             System.out.println("\t1: Register child");
             System.out.println("\t2: Manage ticket");
@@ -64,6 +57,56 @@ public class Main {
     }
 
     private static void register_child(Scanner scan) {
-        
+        //Registration Form
+        String firstName="", lastName="", id="";
+        int age=0;
+        float height = 0,weight=0;
+        boolean childAdd = true;
+        do {
+            try {
+                System.out.println("Enter your first name:");
+                firstName = scan.nextLine();
+                if (!firstName.matches("[a-zA-Z]+")){
+                    System.out.println("first name must contain only letters");
+                }
+
+                System.out.println("Enter your last name:");
+                lastName = scan.nextLine();
+                if (!lastName.matches("[a-zA-Z]+")){
+                    System.out.println("Last name must contain only letters");
+                }
+
+                System.out.println("Enter your id:");
+                id = scan.nextLine();
+                if (!id.matches("[0-9]+")){
+                    System.out.println("ID must contain only numbers");
+                    childAdd = false;
+                }
+
+                System.out.println("Enter child age:");
+                age = Integer.parseInt(scan.nextLine());
+                if( age <= 0 ){
+                    System.out.println("age must be greater then zero,try again");
+                    childAdd = false;
+                }
+                System.out.println("Enter child height:");
+                height = Float.parseFloat(scan.nextLine());
+                if( height <= 0 ){
+                    System.out.println("height must be greater then zero,try again");
+                    childAdd = false;
+                }
+                System.out.println("Enter child weight:");
+                weight = Float.parseFloat(scan.nextLine());
+                if( weight <= 0 ){
+                    System.out.println("weight must be greater then zero,try again");
+                    childAdd = false;
+                }
+                childAdd= !childAdd;
+            } catch (Exception e) {
+                System.out.println("Incorrect input,try again");
+            }
+        }while (!childAdd);
+
+        Child newChild = new Child(id,firstName,lastName,height,weight,age);
     }
 }

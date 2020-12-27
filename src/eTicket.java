@@ -1,20 +1,26 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class eTicket {
 
     static Map<String, String> mapIds = new HashMap<String, String>();
 
     private String id;
+    private int status;
     private float debt;
     private boolean isValid;
-    private Date timeLimit;
+    private float timeLimit;
+    private long timeStarted;
     private ArrayList<Device> devices;
 
-    public eTicket(String childId){
+    public eTicket(String childId, float timeInMin){
         this.id = createUniqueId(childId);
+        this.status = 0;
         this.debt = 0;
         this.isValid = true;
-        this.timeLimit = new Date();
+        this.timeLimit = timeInMin;
+        this.devices = new ArrayList<Device>();
+        this.timeStarted = System.currentTimeMillis();
     }
 
     private String createUniqueId(String childId){
@@ -27,49 +33,54 @@ public class eTicket {
 
     public void addRide(Device d){
         devices.add(d);
+        this.status++;
     }
 
     public void removeRide(String name){
-        devices.removeIf(device -> device.name.equal(name));
+        int index = -1;
+        for (int i = 0 ; i < devices.size(); i++){
+            if (devices.get(i).getName().equals(name)) {
+                index = i;
+                break;
+            }
+        }
+        if(index!=-1) {
+            devices.remove(index);
+            this.status--;
+        }
     }
 
-    public static Map<String, String> getMapIds() {
-        return mapIds;
+    public void exitDevice(String name){
+        this.debt += getDevicePrice(name) != -1 ?getDevicePrice(name) : 0;
+        removeRide(name);
     }
 
-    public static void setMapIds(Map<String, String> mapIds) {
-        eTicket.mapIds = mapIds;
+    public void getOnDevice(String name){
+        if(isValidTicket())
+            exitDevice(name);
     }
 
-    public String getId() {
-        return id;
+    public boolean isValidTicket(){
+        float curr_time = System.currentTimeMillis();
+        if(!this.isValid)
+            return false;
+        if ((curr_time-this.timeStarted)/1000/60 > this.timeLimit){
+            this.isValid = false;
+        }
+        return this.isValid;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public float getDebt() {
-        return debt;
-    }
-
-    public void setDebt(float debt) {
-        this.debt = debt;
-    }
-
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }
-
-    public Date getTimeLimit() {
-        return timeLimit;
-    }
-
-    public void setTimeLimit(Date timeLimit) {
-        this.timeLimit = timeLimit;
+    public float getDevicePrice(String name) {
+        int index = -1;
+        for (int i = 0 ; i < devices.size(); i++){
+            if (devices.get(i).getName().equals(name)) {
+                index = i;
+                break;
+            }
+        }
+        if(index!=-1) {
+            return devices.get(index).getPrice();
+        }
+        return -1;
     }
 }

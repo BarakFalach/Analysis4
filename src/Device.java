@@ -9,13 +9,16 @@ public class Device {
     private int minHeight;
     private int minAge;
     private boolean isOpen;
+    private float price;
     private final ArrayList<eTicket> eTickets;
 
     public Device(int minWeight, int minHeight, int minAge, boolean isOpen,String name,float price) {
+
         this.minWeight = minWeight;
         this.minHeight = minHeight;
         this.minAge = minAge;
         this.isOpen = isOpen;
+        this.price = price;
         this.eTickets = new ArrayList<>();
         this.name = name;
         this.price = price;
@@ -74,4 +77,11 @@ public class Device {
         isOpen = open;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public float getPrice() {
+        return this.price;
+    }
 }

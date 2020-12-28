@@ -13,7 +13,7 @@ public class Guardian {
         myChildren = new HashMap<>();
     }
 
-    public HashMap<String, Child> getMyChildes() {
+    public HashMap<String, Child> getMyChildren() {
         return myChildren;
     }
 

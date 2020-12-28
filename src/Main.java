@@ -90,7 +90,7 @@ public class Main {
 
     private static void exit_park_all(){
         if(system.getGuardian() != null && system.getGuardian().getMyChildren() != null) {
-            for (String childID : system.getGuardian().getMyChildes().keySet()) {
+            for (String childID : system.getGuardian().getMyChildren().keySet()) {
                 exit_park_child(childID);
             }
             System.out.println("All children of current guardian were exit from the park");
@@ -135,7 +135,7 @@ public class Main {
 
     private static void enter_park(Scanner scan) {
         Guardian guardian = system.getGuardian();
-        HashMap<String, Child> myChildren = guardian.getMyChildes();
+        HashMap<String, Child> myChildren = guardian.getMyChildren();
         if(myChildren.keySet().size()==0){
             System.out.println("you dont have any children in the system.");
             return;

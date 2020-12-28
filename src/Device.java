@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
 public class Device {
-    private final float price;
+    private final double price;
     public String name;
-    private final float minWeight;
-    private final float minHeight;
+    private final double minWeight;
+    private final double minHeight;
     private final int minAge;
     private boolean isOpen;
 
-    public Device(float minWeight, float minHeight, int minAge, boolean isOpen,String name,float price) {
+    public Device(double minWeight, double minHeight, int minAge, boolean isOpen,String name,double price) {
 
         this.minWeight = minWeight;
         this.minHeight = minHeight;
@@ -18,12 +18,12 @@ public class Device {
         this.name = name;
     }
 
-    public float getMinWeight() {
+    public double getMinWeight() {
         return minWeight;
     }
 
 
-    public float getMinHeight() {
+    public double getMinHeight() {
         return minHeight;
     }
 
@@ -44,7 +44,7 @@ public class Device {
         return name;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return this.price;
     }
 }

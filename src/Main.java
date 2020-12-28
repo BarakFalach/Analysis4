@@ -44,17 +44,15 @@ public class Main {
     private static void InitGuardian() {
         System.out.println(" ⭐⭐⭐⭐ Welcome To Gashash Land ⭐⭐⭐⭐ \n ");
         System.out.println("Guardian Please enter the following details inorder to continue. ");
-        System.out.println("Please enter your Credit Card details:");
         boolean cardDetails = true;
         double amount=0;
         String cardnumber="";
-        do{
+        while (cardDetails){
             try{
                 System.out.println("Please enter your Credit Card number");
                 cardnumber = scan.nextLine();
                 if (!cardnumber.matches("[0-9]+")){
                     System.out.println("Card Number must contain only numbers,try again");
-                    cardDetails = !cardDetails;
                     throw new Exception("");
                 }
                 else{
@@ -62,20 +60,19 @@ public class Main {
                     amount = Double.parseDouble(scan.nextLine());
                     if (amount <=0){
                         System.out.println("Credit Card Declined by you company,try again");
-                        cardDetails = !cardDetails;
                         throw new Exception("");
-
                     }
                 }
-                cardDetails = !cardDetails;
+                cardDetails = false;
             }catch (Exception e){
                 System.out.println("Try Again!");
-                cardDetails = false;
+                cardDetails = true;
             }
-        }while(!cardDetails);
+        }
         System.out.println("\n Request Approved, Congrats!");
         Guardian guardian = new Guardian(cardnumber,amount);
         systemObjects.add(guardian);
+        system.setGuardian(guardian);
         System.out.println("Guardian Registered!");
     }
 
@@ -92,29 +89,49 @@ public class Main {
     }
 
     private static void exit_park_all(){
-        for (String childID : system.getGuardian().getMyChildes().keySet()) {
-            exit_park_child(childID);
+        if(system.getGuardian() != null && system.getGuardian().getMyChildren() != null) {
+            for (String childID : system.getGuardian().getMyChildes().keySet()) {
+                exit_park_child(childID);
+            }
+            System.out.println("All children of current guardian were exit from the park");
+        }
+        else {
+            System.out.println("The are not children of current guardian at the park");
         }
     }
 
     private static void exit_park_child(Scanner scan){
-        try {
-            String id = scan.toString();
-            exit_park_child(id);
-        } catch (ClassCastException e){
-            System.out.println("Please insert digits only");
-        }
+        boolean flag = false;
+        do {
+            if(system.getGuardian() != null && system.getGuardian().getMyChildren()!=null){
+                System.out.println("Please insert child Id to exit from park:");
+                for (String childId: system.getGuardian().getMyChildren().keySet()){
+                    System.out.println(childId);
+                }
+                String id = scan.nextLine();
+                if (!id.matches("[0-9]+")) {
+                    System.out.println("ID must contain only numbers");
+                }
+                else {
+                    exit_park_child(id);
+                    flag = true;
+                }
+            }
+
+            else {
+                System.out.println("guardian not exist");
+                flag = true;
+            }
+        } while (!flag);
     }
 
-    private static void exit_park_child(String  id){
-        if(system.getGuardian().getMyChildes().containsKey(id)){
-            Child c = system.getGuardian().getMyChildes().get(id);
+    private static void exit_park_child(String id){
+        if(system.getGuardian().getMyChildren().containsKey(id)){
+            Child c = system.getGuardian().getMyChildren().get(id);
             double debt = c.getTicket().getDebt();
-            System.out.println(String.format("child : %s child Id: %d has left the park, Debt: %.2f", c.getFirstName(), c.getId(), debt));
+            System.out.println(String.format("child : %s (child Id: %s) has left the park, Debt: %.2f", c.getFirstName(), c.getId(), debt));
         }
     }
-
-
 
     private static void enter_park(Scanner scan) {
         Guardian guardian = system.getGuardian();
@@ -193,52 +210,47 @@ public class Main {
         int age=0;
         float height = 0,weight=0;
         boolean childAdd = true;
-        do {
+        while(childAdd){
             try {
                 System.out.println("Enter your first name:");
                 firstName = scan.nextLine();
                 if (!firstName.matches("[a-zA-Z]+")){
                     System.out.println("first name must contain only letters");
+                    throw new Exception("");
                 }
 
                 System.out.println("Enter your last name:");
                 lastName = scan.nextLine();
                 if (!lastName.matches("[a-zA-Z]+")){
                     System.out.println("Last name must contain only letters");
+                    throw new Exception("");
                 }
 
                 System.out.println("Enter your id:");
                 id = scan.nextLine();
                 if (!id.matches("[0-9]+")){
                     System.out.println("ID must contain only numbers");
-                    childAdd = false;
+                    throw new Exception("");
                 }
 
                 System.out.println("Enter child age:");
                 age = Integer.parseInt(scan.nextLine());
                 if( age <= 0 ){
                     System.out.println("age must be greater then zero,try again");
-                    childAdd = false;
+                    throw new Exception("");
                 }
-                System.out.println("Enter child height:");
-                height = Float.parseFloat(scan.nextLine());
-                if( height <= 0 ){
-                    System.out.println("height must be greater then zero,try again");
-                    childAdd = false;
-                }
-                System.out.println("Enter child weight:");
-                weight = Float.parseFloat(scan.nextLine());
-                if( weight <= 0 ){
-                    System.out.println("weight must be greater then zero,try again");
-                    childAdd = false;
-                }
-                childAdd= !childAdd;
+                childAdd= false;
             } catch (Exception e) {
                 System.out.println("Incorrect input,try again");
+                childAdd= true;
             }
-        }while (!childAdd);
+        }
+        RegisterationForm regForm = new RegisterationForm(firstName,lastName,id,age);
+        Child newChild = new Child(regForm.getId(),regForm.getFirstName(),regForm.getLastName(),regForm.getAge());
+        systemObjects.add(newChild);
+        // TODO : TOM - add eTicket creation with and ask for timelimit
+        System.out.println();
 
-        Child newChild = new Child(id,firstName,lastName,height,weight,age);
     }
 
 

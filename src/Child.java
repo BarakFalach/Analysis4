@@ -2,19 +2,17 @@ public class Child {
     private String id;
     private String firstName;
     private String lastName;
-    private float height;
-    private float weight;
+    private double height;
+    private double weight;
     private int age;
     private Bracelet bracelet;
     private eTicket ticket;
     //TODO location
 
-    public Child(String id, String firstName, String lastName, float height, float weight, int age) {
+    public Child(String id, String firstName, String lastName, int age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.height = height;
-        this.weight = weight;
         this.age = age;
     }
 
@@ -38,12 +36,12 @@ public class Child {
         return lastName;
     }
 
-    public float getHeight() {
-        return height;
+    public double getHeight() {
+        return this.height;
     }
 
-    public float getWeight() {
-        return weight;
+    public double getWeight() {
+        return this.weight;
     }
 
     public int getAge() {

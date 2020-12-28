@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Guardian {
@@ -69,16 +68,15 @@ public class Guardian {
         return null;
     }
 
-    public boolean addChild(Child child){
+    public void addChild(Child child){
         if(child == null)
-            return false;
+            return;
         for(Child existChild : myChildren.values()){
             if(child.isEqual(existChild)){
-                return false;
+                return;
             }
         }
         myChildren.put(child.getId(), child);
-        return true;
     }
 
     public double getAmount() {

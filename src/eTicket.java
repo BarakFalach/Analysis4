@@ -10,7 +10,7 @@ public class eTicket {
     private long timeStarted;
     private ArrayList<Device> devices;
     private HashMap<String, Integer> numOfRidesOnDevice;
-    private HashMap<String, Float> pricePerDevice;
+    private HashMap<String, Double> pricePerDevice;
 
     public eTicket(String childId, float timeInMin){
         this.id = childId;
@@ -73,7 +73,7 @@ public class eTicket {
         return this.isValid;
     }
 
-    public float getDevicePrice(String name) {
+    public double getDevicePrice(String name) {
         int index = -1;
         for (int i = 0 ; i < devices.size(); i++){
             if (devices.get(i).getName().equals(name)) {

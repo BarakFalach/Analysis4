@@ -1,21 +1,21 @@
 import java.util.*;
 
 public class eParkSystem {
-    private HashMap<String, Device> Devices;
-    private List<Guardian> Guardians;
+    private List<Device> Devices;
+    private HashMap<Integer,Guardian> Guardians;
     private HashMap<Child, Guardian> Childs;
 
     public eParkSystem(){
-        this.Devices = new HashMap<>();
+        this.Devices = new LinkedList<>();
         this.Childs = new HashMap<>();
-        this.Guardians = new LinkedList<>();
+        this.Guardians = new HashMap<>();
     }
 
-    public List<Guardian> getGuardians() {
+    public HashMap<Integer,Guardian> getGuardians() {
         return Guardians;
     }
 
-    public HashMap<String, Device> getDevices() {
+    public List<Device> getDevices() {
         return Devices;
     }
 
@@ -24,7 +24,7 @@ public class eParkSystem {
     }
 
     public void addGuardian(Guardian g){
-        this.Guardians.add(g);
+        this.Guardians.put(g.getId(),g);
     }
 
     public void removeGuardian(Guardian g){
@@ -34,4 +34,6 @@ public class eParkSystem {
     public void addChild(Child c,Guardian g){
         this.Childs.put(c,g);
     }
+
+    public void addDevice(Device d){ this.Devices.add(d);}
 }

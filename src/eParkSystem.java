@@ -22,12 +22,15 @@ public class eParkSystem {
     public HashMap<Child, Guardian> getChilds() {
         return Childs;
     }
+
     public void addGuardian(Guardian g){
         this.Guardians.add(g);
     }
+
     public void removeGuardian(Guardian g){
         this.Guardians.remove(g);
     }
+
     public void addChild(Child c,Guardian g){
         this.Childs.put(c,g);
     }

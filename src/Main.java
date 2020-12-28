@@ -89,7 +89,49 @@ public class Main {
         system.addDevice(Carrousel);
     }
 
+    private static void exit_park_all(){
+        for (Child c : system.getGuardians().get(0).getMyChildes().keySet()) {
+            exit_park_child(c.getId());
+        }
+    }
+
+    private static void exit_park_child(Scanner scan){
+        try {
+            int id = Integer.parseInt(scan.toString());
+            if(system.getGuardians().get(0).getMyChildes().contains(id)){
+                exit_park_child(id);
+            }
+        } catch (ClassCastException e){
+            System.out.println("Please insert digits only");
+        }
+    }
+
+    private static void exit_park_child(int id){
+        if(system.getGuardians().get(0).getMyChildes().contains(id)){
+            Child c = system.getGuardians().get(0).getMyChildes().get(id);
+            double debt = c.getTicket().getDebt();
+            System.out.println(String.format("child : %s child Id: %d has left the park, Debt: %.2f", c.getFirstName(), c.getId(), debt));
+        }
+    }
+
     private static void exit_park(Scanner scan) {
+        boolean exit_park = true;
+        do {
+            System.out.println("\t 1: All children of current guardian");
+            System.out.println("\t 2: Chose specific child");
+            String choice = scan.nextLine();
+            switch (choice) {
+                case "1": // All children of current guardian
+                    exit_park_all();
+                    exit_park = false;
+                    break;
+                case "2": // Specific child
+                    exit_park_child(scan);
+                    exit_park = false;
+                    break;
+            }
+
+        }while(exit_park);
     }
 
     private static void manage_ticket(Scanner scan) {

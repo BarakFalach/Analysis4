@@ -1,16 +1,19 @@
 import java.util.*;
-
+//TODO : 1 -
 public class Main {
     public static List<Object> systemObjects = new LinkedList<>();
     public static eParkSystem system = new eParkSystem();
     public static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
+        InitDevices();
         String choise = null;
         do {
             System.out.println("Please press the requested option:");
             System.out.println("\t1: Register child");
-            System.out.println("\t2: Manage ticket");
-            System.out.println("\t3: Exit park");
+            System.out.println("\t2: Enter Park");
+            System.out.println("\t3: Manage ticket");
+            System.out.println("\t4: Jump on ride");
+            System.out.println("\t5: Exit park");
             System.out.println("\t0: Exit");
             choise = scan.nextLine();
 
@@ -18,17 +21,25 @@ public class Main {
                 case "1": //Register child
                     register_child(scan);
                     break;
-                case "2": //Manage ticket
+                case "2": //Enter Park
+                    break;
+                case "3": //Manage ticket
                     manage_ticket(scan);
                     break;
-                case "3": //Exit park
+                case "4": //jump on Ride
+                    break;
+                case "5": //Exit Park
                     exit_park(scan);
                     break;
-                case "4": //Exit
+                case "0": //Exit
                     System.exit(0);
                     break;
                 }
         }while (!choise.equals("0")) ;
+    }
+
+    private static void InitDevices() {
+        //Device mambaRide = new extremeDevice(40,1.4,12,true,"Mamba Ride",50);
     }
 
     private static void exit_park(Scanner scan) {

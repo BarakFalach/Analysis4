@@ -33,7 +33,7 @@ public class Guardian {
             return;
         this.myChildes = myChildes;
     }
-    public boolean byTicket(Child child, Device device, int numOfTicket){
+    public boolean buyTicket(Child child, Device device, int numOfTicket){
 
         return true;
     }

@@ -23,6 +23,7 @@ public class Main {
                     register_child(scan);
                     break;
                 case "2": //Enter Park
+                    enter_park(scan);
                     break;
                 case "3": //Manage ticket
                     manage_ticket(scan);
@@ -116,24 +117,29 @@ public class Main {
 
 
     private static void enter_park(Scanner scan) {
-
+        Guardian guardian = system.getGuardian();
+        HashMap<String, Child> myChildren = guardian.getMyChildes();
+        if(myChildren.keySet().size()==0){
+            System.out.println("you dont have any children in the system.");
+            return;
+        }
         boolean manageMenu = true;
         do {
-            System.out.println("\t choose child to enter:");
-            //printChilds();
-            System.out.println("\t 2: Remove ride");
-            String choice = scan.nextLine();
-            switch (choice) {
-                case "1": //Add Ride
-                    //Add_ride(scan, id);
-                    manageMenu = false;
-                    break;
-                case "2": //Remove Ride
-                    //Remove_ride(id);
-                    manageMenu = false;
-                    break;
+            System.out.println(guardian.childrenInPark());
+            System.out.println("\t Please enter child ID: ");
+            String childID = scan.nextLine();
+            if(myChildren.containsKey(childID)){
+                Child child = myChildren.get(childID);
+                if(child.getBracelet()!=null) {
+                    System.out.println("The child is in the park already");
+                    return;
+                }
+                child.setBracelet(new Bracelet(childID));
+                manageMenu=false;
             }
-
+            else {
+                System.out.println("\t Please enter valid ID number");
+            }
         }while(manageMenu);
     }
 
@@ -178,6 +184,8 @@ public class Main {
 
 
     }
+
+
 
     private static void register_child(Scanner scan) {
         //Registration Form
@@ -232,6 +240,10 @@ public class Main {
 
         Child newChild = new Child(id,firstName,lastName,height,weight,age);
     }
+
+
+
+
 
 
 }

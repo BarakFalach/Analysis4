@@ -91,29 +91,49 @@ public class Main {
     }
 
     private static void exit_park_all(){
-        for (String childID : system.getGuardian().getMyChildes().keySet()) {
-            exit_park_child(childID);
+        if(system.getGuardian() != null && system.getGuardian().getMyChildren() != null) {
+            for (String childID : system.getGuardian().getMyChildes().keySet()) {
+                exit_park_child(childID);
+            }
+            System.out.println("All children of current guardian were exit from the park");
+        }
+        else {
+            System.out.println("The are not children of current guardian at the park");
         }
     }
 
     private static void exit_park_child(Scanner scan){
-        try {
-            String id = scan.toString();
-            exit_park_child(id);
-        } catch (ClassCastException e){
-            System.out.println("Please insert digits only");
-        }
+        boolean flag = false;
+        do {
+            if(system.getGuardian() != null && system.getGuardian().getMyChildren()!=null){
+                System.out.println("Please insert child Id to exit from park:");
+                for (String childId: system.getGuardian().getMyChildren().keySet()){
+                    System.out.println(childId);
+                }
+                String id = scan.nextLine();
+                if (!id.matches("[0-9]+")) {
+                    System.out.println("ID must contain only numbers");
+                }
+                else {
+                    exit_park_child(id);
+                    flag = true;
+                }
+            }
+
+            else {
+                System.out.println("guardian not exist");
+                flag = true;
+            }
+        } while (!flag);
     }
 
-    private static void exit_park_child(String  id){
-        if(system.getGuardian().getMyChildes().containsKey(id)){
-            Child c = system.getGuardian().getMyChildes().get(id);
+    private static void exit_park_child(String id){
+        if(system.getGuardian().getMyChildren().containsKey(id)){
+            Child c = system.getGuardian().getMyChildren().get(id);
             double debt = c.getTicket().getDebt();
-            System.out.println(String.format("child : %s child Id: %d has left the park, Debt: %.2f", c.getFirstName(), c.getId(), debt));
+            System.out.println(String.format("child : %s (child Id: %s) has left the park, Debt: %.2f", c.getFirstName(), c.getId(), debt));
         }
     }
-
-
 
     private static void enter_park(Scanner scan) {
 

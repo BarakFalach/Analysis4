@@ -51,16 +51,15 @@ public class Device {
 
     public boolean canAddDevice(eTicket ticket)
     {
-//        return ticket.getHeight() > minHeight && ticket.getWeight() > minWeight && ticket.getAge() > minAge;
-            return true;
+        return ticket.getHeight() > minHeight && ticket.getWeight() > minWeight && ticket.getAge() > minAge;
     }
 
     public boolean rideOnDevice(eTicket ticket)
     {
-//        if  (ticket.isTimeOk() && ticket.existActiveRideToDevice(name)){
-//            System.out.println(ticket.getId +" can jump on ride: " + name);
-//            return true;
-//        }
+        if  (ticket.isTimeOk() && ticket.existActiveRideToDevice(name)){
+            System.out.println(ticket.getId() +" can jump on ride: " + name);
+            return true;
+        }
         return false;
     }
 }

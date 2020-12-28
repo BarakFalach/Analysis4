@@ -30,7 +30,7 @@ public class eTicket {
     }
 
     public void addRide(Device d){
-        this.numOfActiveRides.put(d.getName(), (this.numOfActiveRides.containsKey(d.getName()))? this.numOfActiveRides.get(d.getName()) + 1 :0);
+        this.numOfActiveRides.put(d.getName(), (this.numOfActiveRides.containsKey(d.getName()))? this.numOfActiveRides.get(d.getName()) + 1 :1);
         if (!this.numOfRidesOnDevice.containsKey(d.getName())){
             this.numOfRidesOnDevice.put(d.getName(), 0);
             this.pricePerDevice.put(d.getName(), d.getPrice());
@@ -61,11 +61,11 @@ public class eTicket {
             if(b){
                 this.removeRide(rideName);
                 this.numOfRidesOnDevice.put(rideName, this.numOfRidesOnDevice.get(rideName)+1);
-                System.out.println(String.format("Child is riding on %s", rideName));
+                System.out.println(String.format("Child is riding on %s Ohhh Yeah!", rideName));
             }
 
             else
-                System.out.println(String.format("Child cant ride on: %s", rideName));
+                System.out.println(String.format("Child cant ride on: %s ", rideName));
             return b;
         }
 

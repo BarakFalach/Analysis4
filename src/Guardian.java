@@ -20,26 +20,32 @@ public class Guardian {
         return true;
     }
 
+    public HashMap<String, Child> getChildrenInPark(){
+        HashMap<String, Child> tmp = new HashMap<>();
+        for (String key : this.getMyChildren().keySet()){
+            if(this.getMyChildren().get(key).getBracelet()!=null)
+                tmp.put(key, this.getMyChildren().get(key));
+        }
+        return tmp;
+    }
+
     public String childrenInPark()
     {
-        System.out.println("---Children in Park---");
+        System.out.println("---- Children in Park ----");
         StringBuilder stringBuilder = new StringBuilder();
-        for (String childId : myChildren.keySet()){
+        for (String childId: getChildrenInPark().keySet()) {
             Child child = myChildren.get(childId);
-            if (child.getBracelet()!=null){
-                stringBuilder.append('\t');
-                stringBuilder.append(child.getFirstName());
-                stringBuilder.append(" ");
-                stringBuilder.append(child.getLastName());
-                stringBuilder.append(" id: ");
-                stringBuilder.append(child.getId());
-                stringBuilder.append("\n");
-            }
+            stringBuilder.append(child.getFirstName());
+            stringBuilder.append(" ");
+            stringBuilder.append(child.getLastName());
+            stringBuilder.append(" id: ");
+            stringBuilder.append(child.getId());
+            stringBuilder.append("\n");
         }
+
         if (stringBuilder.length()==0)
             return "You have no children's in the Park";
         return stringBuilder.toString();
-
     }
     public String childrenNotInPark()
     {

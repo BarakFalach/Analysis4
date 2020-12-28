@@ -56,10 +56,16 @@ public class Device {
 
     public boolean rideOnDevice(eTicket ticket)
     {
-        if  (ticket.isTimeOk() && ticket.existActiveRideToDevice(name)){
-            System.out.println(ticket.getId() +" can jump on ride: " + name);
-            return true;
+        if  (!ticket.isTimeOk()){
+            System.out.println(ticket.getId() +" time limit exceeded" );
+            return false;
         }
-        return false;
+        if  (!ticket.existActiveRideToDevice(name)){
+            System.out.println(ticket.getId() +" have no ride to this device: " + name);
+            return false;
+        }
+
+        System.out.println(ticket.getId() +" can jump on ride: " + name);
+        return true;
     }
 }

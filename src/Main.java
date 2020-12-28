@@ -12,7 +12,6 @@ public class Main {
         InitGuardian();
         String choise;
         do {
-            System.out.println();
             System.out.println("------------ Main Menu ------------");
             System.out.println("Please press the requested option:");
             System.out.println("\t1: Register child");
@@ -20,9 +19,8 @@ public class Main {
             System.out.println("\t3: Manage ticket");
             System.out.println("\t4: Jump on ride");
             System.out.println("\t5: Exit park");
-            System.out.println("\tExit: exit");
+            System.out.println("\tExit: Exit");
             System.out.println("-----------------------------------");
-            System.out.println("");
 
 
             choise = scan.nextLine();
@@ -51,10 +49,10 @@ public class Main {
         }while (true) ;
     }
 
-
-
     private static void InitGuardian() {
-        System.out.println(" ⭐⭐⭐⭐ Welcome To Gashash Land ⭐⭐⭐⭐ \n ");
+        System.out.println(" ********************************");
+        System.out.println(" ⭐    Welcome To E-Park Land    ⭐");
+        System.out.println(" ********************************\n");
         System.out.println("Guardian Please enter the following details inorder to continue. ");
         boolean cardDetails = true;
         double amount=0;
@@ -162,14 +160,16 @@ public class Main {
         }
         boolean manageMenu = true;
         do {
+            System.out.println("---- Enter Park ----");
             System.out.println("\t 1: Enter child");
             System.out.println("\t 2: Enter children");
             System.out.println("\t 3: Exit");
+            System.out.println("-------------------");
             String choise = scan.nextLine();
             switch (choise) {
                 case "1":
                     System.out.println(guardian.childrenNotInPark());
-                    System.out.println("\t Please enter child ID: ");
+                    System.out.println("Please enter child ID: ");
                     String childID = scan.nextLine();
                     if(myChildren.containsKey(childID)) {
                         Child child = myChildren.get(childID);
@@ -204,15 +204,25 @@ public class Main {
         }
         boolean manageMenu = true;
         do {
+            if (system.getGuardian().getChildrenInPark().keySet().size() == 0) {
+                System.out.println("you have no children in the park");
+                manageMenu = false;
+                continue;
+            }
             System.out.println(guardian.childrenInPark());
             System.out.println("please enter child ID:");
             String childID = scan.nextLine();
             if(myChildren.containsKey(childID)){
                 Child child = myChildren.get(childID);
+                if (child.getTicket().getOptionalRides().size()==0){
+                    System.out.printf("Child %s have no rides on e-Ticket\n", child.getFirstName());
+                    manageMenu = false;
+                    continue;
+                }
 
                 for (String device : child.getTicket().getOptionalRides())
                     System.out.println(device);
-                System.out.println("Insert device name to ride on:");
+                System.out.println("Insert device name to ride on from the list below:");
                 String deviceName = scan.nextLine();
                 child.getTicket().jumpOnRide(deviceName);
                 manageMenu = false;
@@ -230,9 +240,9 @@ public class Main {
         double height = 0,weight = 0;
         while (add){
             try{
-                System.out.printf("Please enter %s Height:",child.getFirstName());
+                System.out.printf("Please enter %s Height(in meters):\n",child.getFirstName());
                 height = Double.parseDouble(scan.nextLine());
-                System.out.printf("Please enter %s Weight:", child.getFirstName());
+                System.out.printf("Please enter %s Weight(in kilograms):\n", child.getFirstName());
                 weight = Double.parseDouble(scan.nextLine());
                 if( weight <= 0 || height <= 0){
                     System.out.println("you must enter a positive double, please measure the child again.");
@@ -240,7 +250,7 @@ public class Main {
                 }
                 add = false;
             }catch (Exception e){
-                System.out.println();
+                System.out.println("Please insert only digits");
             }
         }
         
@@ -250,13 +260,24 @@ public class Main {
         ticket.setHeight(height);
         ticket.setWeight(weight);
         systemObjects.add(newBracelet);
-        System.out.printf("%s %s entered the park",child.getFirstName(),child.getLastName());
+        System.out.printf("%s %s entered the park successfully\n",child.getFirstName(),child.getLastName());
         return true;
     }
 
     private static void exit_park(Scanner scan) {
+        Guardian guardian = system.getGuardian();
+        HashMap<String, Child> myChildren = guardian.getMyChildren();
+        if(myChildren.keySet().size()==0){
+            System.out.println("you dont have any children in the system.");
+            return;
+        }
         boolean exit_park = true;
         do {
+            if (system.getGuardian().getChildrenInPark().keySet().size() == 0) {
+                System.out.println("you have no children in the park");
+                exit_park = false;
+                continue;
+            }
             System.out.println("\t 1: All children of current guardian");
             System.out.println("\t 2: Chose specific child");
             String choice = scan.nextLine();
@@ -275,6 +296,12 @@ public class Main {
     }
 
     private static void manage_ticket(Scanner scan) {
+        Guardian guardian = system.getGuardian();
+        HashMap<String, Child> myChildren = guardian.getMyChildren();
+        if(myChildren.keySet().size()==0){
+            System.out.println("you dont have any children in the system.");
+            return;
+        }
         boolean manageMenu = true;
         System.out.println("---- Manage Ticket ----");
         do{
@@ -295,6 +322,57 @@ public class Main {
     }
 
     private static void remove_ride() {
+        boolean remove = true;
+        boolean remove2 = true;
+        String input = "";
+        Child currentChild;
+        Device currentDevice;
+
+        while (remove){
+            if (system.getGuardian().getChildrenInPark().keySet().size() == 0) {
+                System.out.println("you have no children in the park");
+                remove = false;
+                continue;
+            }
+            System.out.println("Please choose a child from the list below");
+            System.out.println(system.getGuardian().childrenInPark());
+            System.out.println("chosen child id or 0 to return:");
+            input = scan.nextLine();
+            if (input.equals("0")){
+                return;
+            }
+            currentChild = system.getGuardian().getChildByID(input);
+            if (currentChild==null) {
+                System.out.println("Children ID Doesn't Exist");
+                continue;
+            }
+            while (remove2)
+            {
+                System.out.println("Please choose a Device by name to remove from the E-ticket or 0 to return to Menu");
+                for (String device : currentChild.getTicket().getOptionalRides())
+                {
+                    System.out.printf("Device Name: %s \n",device);
+                }
+                input = scan.nextLine();
+                if (input.equals("0")){
+                    return;
+                }
+                currentDevice = eParkSystem.getDeviceByName(input);
+                if (currentDevice == null){
+                    System.out.println("Please Enter a Valid Device Name");
+                    continue;
+                }
+                if (system.getGuardian().getAmount() - currentDevice.getPrice() < 0){
+                    System.out.println("You Don't have Enough Credit in your Account");
+                    continue;
+                }
+                system.getGuardian().setAmount(+currentDevice.getPrice());
+                System.out.printf("Device %s removed from %s E-Ticket \n",currentDevice.getName(),currentChild.getFirstName());
+                system.getGuardian().getMyChildren().get(currentChild.getId()).getTicket().removeRide(currentDevice.getName());
+                remove2 = false;
+            }
+            remove=false;
+        }
     }
 
     private static void add_ride() {
@@ -305,9 +383,14 @@ public class Main {
         Device currentDevice;
 
         while (manageMenu){
-            System.out.println("\t Please choose a Children");
-            System.out.println("\t 0: to Return to the Menu");
+            if (system.getGuardian().getChildrenInPark().keySet().size() == 0) {
+                System.out.println("you have no children in the park");
+                manageMenu = false;
+                continue;
+            }
+            System.out.println("Please choose a child from the list above");
             System.out.println(system.getGuardian().childrenInPark());
+            System.out.println("chosen child id or 0 to return:");
             input = scan.nextLine();
             if (input.equals("0")){
                 return;
@@ -319,8 +402,7 @@ public class Main {
             }
             while (manage2Menu)
             {
-                System.out.println("\t Please choose a Device to add to the E-ticket");
-                System.out.println("\t 0: to Return to the Menu");
+                System.out.println("Please choose a Device by name to add to the E-ticket or 0 to return to Menu");
                 for (Device device : system.getDevices())
                 {
                     if (device.canAddDevice(currentChild.getTicket()))
@@ -342,12 +424,12 @@ public class Main {
                 if (currentDevice instanceof extremeDevice){
                     System.out.printf("%s is an Extreme Device would you like to add it? (Y/N) \n", currentDevice.getName());
                     input = scan.nextLine();
-                    if (!input.equals("Y"))
+                    if (!input.equalsIgnoreCase("Y"))
                         continue;
                 }
                 system.getGuardian().setAmount(-currentDevice.getPrice());
-                System.out.printf("Device %s added to %s E-Ticket",currentDevice.getName(),currentChild.getFirstName());
-                system.getGuardian().getMyChildren().get(currentChild).getTicket().addRide(currentDevice);
+                System.out.printf("Device %s added to %s E-Ticket \n",currentDevice.getName(),currentChild.getFirstName());
+                system.getGuardian().getMyChildren().get(currentChild.getId()).getTicket().addRide(currentDevice);
                 manage2Menu = false;
             }
             manageMenu=false;
@@ -378,8 +460,8 @@ public class Main {
 
                 System.out.println("Enter your id:");
                 id = scan.nextLine();
-                if (!id.matches("[0-9]+")){
-                    System.out.println("ID must contain only numbers");
+                if (!id.matches("[0-9]+") || id.equals("0")){
+                    System.out.println("ID must contain only numbers and cannot be 0");
                     throw new Exception("");
                 }
                 for (Child c : system.getChilds().keySet()){
@@ -404,7 +486,7 @@ public class Main {
         RegisterationForm regForm = new RegisterationForm(firstName,lastName,id,age);
         Child newChild = new Child(regForm.getId(),regForm.getFirstName(),regForm.getLastName(),regForm.getAge());
         systemObjects.add(newChild);
-        System.out.printf("\nFinal step guardian , please enter time limit in minutes(positive double) for %s :", regForm.getFirstName());
+        System.out.printf("Final step guardian , please enter time limit in minutes(positive double) for %s : \n", regForm.getFirstName());
         double timelimit;
         try {
             timelimit = Double.parseDouble(scan.nextLine());

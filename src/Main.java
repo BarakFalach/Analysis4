@@ -142,22 +142,48 @@ public class Main {
         }
         boolean manageMenu = true;
         do {
-            System.out.println(guardian.childrenNotInPark());
-            System.out.println("\t Please enter child ID: ");
-            String childID = scan.nextLine();
-            if(myChildren.containsKey(childID)){
-                Child child = myChildren.get(childID);
-                if(child.getBracelet()!=null) {
-                    System.out.println("The child is in the park already");
-                    return;
-                }
-                child.setBracelet(new Bracelet(childID));
-                manageMenu=false;
-            }
-            else {
-                System.out.println("\t Please enter valid ID number");
+            System.out.println("\t 1: Enter child");
+            System.out.println("\t 2: Enter children");
+            System.out.println("\t 3: Exit");
+            String choise = scan.nextLine();
+            switch (choise) {
+                case "1":
+                    System.out.println(guardian.childrenNotInPark());
+                    System.out.println("\t Please enter child ID: ");
+                    String childID = scan.nextLine();
+                    if(myChildren.containsKey(childID)) {
+                        Child child = myChildren.get(childID);
+                        if (!enter_child(child))
+                            System.out.println("The child is in the park already");
+                        else
+                            manageMenu=false;
+                    }
+                    else
+                        System.out.println("\t The ID number is not valid");
+                    break;
+                case "2":
+                    for(Child child : myChildren.values())
+                        enter_child(child);
+                    System.out.println("all your children entered the park");
+                    break;
+                case "3":
+                    manageMenu=false;
+                default:
+                    System.out.println("please enter valid value");
             }
         }while(manageMenu);
+    }
+
+    private static boolean enter_child(Child child){
+        if(child.getBracelet()!=null)
+            return false;
+        Bracelet newBracelet = new Bracelet(child.getId());
+        child.setBracelet(newBracelet);
+        eTicket ticket = child.getTicket();
+        ticket.setHeight(child.getHeight());
+        ticket.setWeight(child.getWeight());
+        systemObjects.add(newBracelet);
+        return true;
     }
 
     private static void exit_park(Scanner scan) {
@@ -264,6 +290,7 @@ public class Main {
         System.out.println("Child Added ! \n");
 
     }
+
 
 
 

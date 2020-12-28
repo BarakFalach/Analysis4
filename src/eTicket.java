@@ -16,11 +16,9 @@ public class eTicket {
     private HashMap<String, Integer> numOfRidesOnDevice;
     private HashMap<String, Double> pricePerDevice;
 
-    public eTicket(String childId, double timeInMin, double height, double weight, double age){
+    public eTicket(String childId, double timeInMin, double age){
         this.id = childId;
         this.status = 0;
-        this.height = height;
-        this.weight = weight;
         this.age = age;
         this.debt = 0;
         this.isValid = true;
@@ -92,6 +90,10 @@ public class eTicket {
     public double getWeight() {
         return weight;
     }
+
+    public void setHeight(double height){this.height = height;}
+
+    public void setWeight(double weight){this.weight =weight;}
 
     public double getAge() {
         return age;

@@ -20,7 +20,7 @@ public class Main {
             System.out.println("\t3: Manage ticket");
             System.out.println("\t4: Jump on ride");
             System.out.println("\t5: Exit park");
-            System.out.println("\tExit - type 'Exit'");
+            System.out.println("\tExit: exit");
             System.out.println("-----------------------------------");
             System.out.println("");
 
@@ -226,12 +226,31 @@ public class Main {
     private static boolean enter_child(Child child){
         if(child.getBracelet()!=null)
             return false;
+        boolean add = true;
+        double height = 0,weight = 0;
+        while (add){
+            try{
+                System.out.printf("Please enter %s Height:",child.getFirstName());
+                height = Double.parseDouble(scan.nextLine());
+                System.out.printf("Please enter %s Weight:", child.getFirstName());
+                weight = Double.parseDouble(scan.nextLine());
+                if( weight <= 0 || height <= 0){
+                    System.out.println("you must enter a positive double, please measure the child again.");
+                    throw new Exception("");
+                }
+                add = false;
+            }catch (Exception e){
+                System.out.println();
+            }
+        }
+        
         Bracelet newBracelet = new Bracelet(child.getId());
         child.setBracelet(newBracelet);
         eTicket ticket = child.getTicket();
-        ticket.setHeight(child.getHeight());
-        ticket.setWeight(child.getWeight());
+        ticket.setHeight(height);
+        ticket.setWeight(weight);
         systemObjects.add(newBracelet);
+        System.out.printf("%s %s entered the park",child.getFirstName(),child.getLastName());
         return true;
     }
 
@@ -256,6 +275,29 @@ public class Main {
     }
 
     private static void manage_ticket(Scanner scan) {
+        boolean manageMenu = true;
+        System.out.println("---- Manage Ticket ----");
+        do{
+            System.out.println("\t 1: Add ride");
+            System.out.println("\t 2: Remove ride");
+            String choice = scan.nextLine();
+            switch (choice){
+                case "1" : //Add ride
+                    add_ride();
+                    manageMenu = false;
+                    break;
+                case "2": //Remove ride
+                    remove_ride();
+                    manageMenu = false;
+                    break;
+            }
+        }while (manageMenu);
+    }
+
+    private static void remove_ride() {
+    }
+
+    private static void add_ride() {
         boolean manageMenu = true;
         boolean manage2Menu = true;
         Child currentChild;
@@ -282,7 +324,7 @@ public class Main {
                 for (Device device : system.getDevices())
                 {
                     if (device.canAddDevice(currentChild.getTicket()))
-                    System.out.printf("Device Name: %s Price: %s \n",device.getName(),device.getPrice());
+                        System.out.printf("Device Name: %s Price: %s \n",device.getName(),device.getPrice());
                 }
                 input = scan.nextLine();
                 if (input.equals("0")){
@@ -305,6 +347,7 @@ public class Main {
                 }
                 system.getGuardian().setAmount(-currentDevice.getPrice());
                 System.out.printf("Device %s added to %s E-Ticket",currentDevice.getName(),currentChild.getFirstName());
+                system.getGuardian().getMyChildren().get(currentChild).getTicket().addRide(currentDevice);
                 manage2Menu = false;
             }
             manageMenu=false;
@@ -313,6 +356,7 @@ public class Main {
 
     private static void register_child(Scanner scan) {
         //Registration Form
+        System.out.println("---- Registration Form ----");
         String firstName="", lastName="", id="";
         int age=0;
         boolean childAdd = true;
@@ -360,8 +404,7 @@ public class Main {
         RegisterationForm regForm = new RegisterationForm(firstName,lastName,id,age);
         Child newChild = new Child(regForm.getId(),regForm.getFirstName(),regForm.getLastName(),regForm.getAge());
         systemObjects.add(newChild);
-        System.out.printf("\n Final step guardian , please enter time limit in minutes(positive double) for %s :)%n", regForm.getFirstName());
-        // TODO : TOM - add eTicket creation with and ask for timelimit
+        System.out.printf("\nFinal step guardian , please enter time limit in minutes(positive double) for %s :", regForm.getFirstName());
         double timelimit;
         try {
             timelimit = Double.parseDouble(scan.nextLine());

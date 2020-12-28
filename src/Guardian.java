@@ -17,7 +17,6 @@ public class Guardian {
         return myChildes;
     }
 
-
     public boolean buyTicket(Child child, Device device, int numOfTicket){
         return true;
     }
@@ -36,7 +35,7 @@ public class Guardian {
                 stringBuilder.append("\n");
             }
         }
-        if (stringBuilder.length() == 0)
+        if (stringBuilder.toString().length()==0)
             return "You have no children's in the Park";
         return stringBuilder.toString();
 
@@ -55,7 +54,7 @@ public class Guardian {
                 stringBuilder.append("\n");
             }
         }
-        if (stringBuilder.length() == 0)
+        if (stringBuilder.toString().length()==0)
             return "You have no children's that can Enter The park ";
         return stringBuilder.toString();
     }

@@ -53,7 +53,7 @@ public class eTicket {
     }
 
     public void jumpOnRide(String rideName){
-        boolean b = eParkSystem.getDeviceByName(rideName).rideOnDevice(this);
+        boolean b = Objects.requireNonNull(eParkSystem.getDeviceByName(rideName)).rideOnDevice(this);
 
         if(b){
             this.removeRide(rideName);
@@ -80,7 +80,6 @@ public class eTicket {
         }
         return this.isValid;
     }
-
 
     public String getId() {
         return id;

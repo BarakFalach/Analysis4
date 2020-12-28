@@ -43,20 +43,37 @@ public class eTicket {
             this.numOfActiveRides.put(rideName, this.numOfActiveRides.get(rideName)-1);
     }
 
-    public String[] getOptionalRidesToRemove(){
-        Map<Object, Object> collect = this.numOfActiveRides.entrySet().stream()
-                .filter(x -> x.getValue() > 0)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        return (String[]) collect.keySet().toArray();
+    public ArrayList<String> getOptionalRides(){
+        ArrayList<String> s = new ArrayList<>();
+        for (String key : numOfActiveRides.keySet()){
+            if (numOfActiveRides.get(key)>0){
+                s.add(key);
+            }
+        }
+        return s;
     }
 
-    public void jumpOnRide(String rideName){
-        boolean b = Objects.requireNonNull(eParkSystem.getDeviceByName(rideName)).rideOnDevice(this);
+    public boolean jumpOnRide(String rideName){
+        Device d = eParkSystem.getDeviceByName(rideName);
+        if (d != null){
+            boolean b = Objects.requireNonNull(eParkSystem.getDeviceByName(rideName)).rideOnDevice(this);
 
-        if(b){
-            this.removeRide(rideName);
-            this.numOfRidesOnDevice.put(rideName, this.numOfRidesOnDevice.get(rideName)+1);
+            if(b){
+                this.removeRide(rideName);
+                this.numOfRidesOnDevice.put(rideName, this.numOfRidesOnDevice.get(rideName)+1);
+                System.out.println(String.format("Child is riding on %s", rideName));
+            }
+
+            else
+                System.out.println(String.format("Child cant ride on: %s", rideName));
+            return b;
         }
+
+        else {
+            System.out.println(String.format("There is no such a device: %s", rideName));
+        }
+
+        return false;
     }
 
     public boolean existActiveRideToDevice(String deviceName){

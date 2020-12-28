@@ -22,10 +22,12 @@ public class Guardian {
 
     public String childrenInPark()
     {
+        System.out.println("---Children in Park---");
         StringBuilder stringBuilder = new StringBuilder();
         for (String childId : myChildren.keySet()){
             Child child = myChildren.get(childId);
             if (child.getBracelet()!=null){
+                stringBuilder.append('\t');
                 stringBuilder.append(child.getFirstName());
                 stringBuilder.append(" ");
                 stringBuilder.append(child.getLastName());
@@ -35,17 +37,18 @@ public class Guardian {
             }
         }
         if (stringBuilder.length()==0)
-
             return "You have no children's in the Park";
         return stringBuilder.toString();
 
     }
     public String childrenNotInPark()
     {
+        System.out.println("---Children Not in Park---");
         StringBuilder stringBuilder = new StringBuilder();
         for (String childID : myChildren.keySet()){
             Child child = myChildren.get(childID);
             if (child.getBracelet()==null){
+                stringBuilder.append('\t');
                 stringBuilder.append(child.getFirstName());
                 stringBuilder.append(" ");
                 stringBuilder.append(child.getLastName());
@@ -55,7 +58,6 @@ public class Guardian {
             }
         }
         if (stringBuilder.length()==0)
-
             return "You have no children's that can Enter The park ";
         return stringBuilder.toString();
     }
@@ -77,8 +79,11 @@ public class Guardian {
         myChildren.put(child.getId(), child);
     }
 
+    public double getAmount() {
+        return amount;
+    }
 
-
-
-
+    public void setAmount(double amount) {
+        this.amount += amount;
+    }
 }

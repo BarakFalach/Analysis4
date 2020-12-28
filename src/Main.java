@@ -142,7 +142,7 @@ public class Main {
         }
         boolean manageMenu = true;
         do {
-            System.out.println(guardian.childrenInPark());
+            System.out.println(guardian.childrenNotInPark());
             System.out.println("\t Please enter child ID: ");
             String childID = scan.nextLine();
             if(myChildren.containsKey(childID)){

@@ -1,10 +1,7 @@
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+
 
 public class eTicket {
-
-    static Map<String, String> mapIds = new HashMap<String, String>();
-
     private String id;
     private int status;
     private float debt;
@@ -12,27 +9,27 @@ public class eTicket {
     private float timeLimit;
     private long timeStarted;
     private ArrayList<Device> devices;
+    private HashMap<String, Integer> numOfRidesOnDevice;
+    private HashMap<String, Float> pricePerDevice;
 
     public eTicket(String childId, float timeInMin){
-        this.id = createUniqueId(childId);
+        this.id = childId;
         this.status = 0;
         this.debt = 0;
         this.isValid = true;
         this.timeLimit = timeInMin;
         this.devices = new ArrayList<Device>();
+        this.numOfRidesOnDevice = new HashMap<>();
+        this.pricePerDevice = new HashMap<>();
         this.timeStarted = System.currentTimeMillis();
-    }
-
-    private String createUniqueId(String childId){
-        String uniqueId = UUID.randomUUID().toString();
-        while (mapIds.containsKey(uniqueId))
-            uniqueId = UUID.randomUUID().toString();
-        mapIds.put(uniqueId, childId);
-        return uniqueId;
     }
 
     public void addRide(Device d){
         devices.add(d);
+        if (!this.numOfRidesOnDevice.containsKey(d.getName())){
+            this.numOfRidesOnDevice.put(d.getName(), 0);
+            this.pricePerDevice.put(d.getName(), d.getPrice());
+        }
         this.status++;
     }
 
@@ -50,14 +47,20 @@ public class eTicket {
         }
     }
 
-    public void exitDevice(String name){
-        this.debt += getDevicePrice(name) != -1 ?getDevicePrice(name) : 0;
-        removeRide(name);
+    public float getDebt(){
+        for (String key : this.numOfRidesOnDevice.keySet()){
+            this.debt+= numOfRidesOnDevice.get(key) * pricePerDevice.get(key);
+        }
+        return this.debt;
     }
 
-    public void getOnDevice(String name){
-        if(isValidTicket())
-            exitDevice(name);
+    public void jumpOnRide(String name){
+        if(!isValidTicket()) {
+            System.out.println("you cant jump on this device...");
+            return;
+        }
+        this.removeRide(name);
+        this.numOfRidesOnDevice.put(name, this.numOfRidesOnDevice.get(name)+1);
     }
 
     public boolean isValidTicket(){

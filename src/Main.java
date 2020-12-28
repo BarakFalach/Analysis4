@@ -91,25 +91,23 @@ public class Main {
     }
 
     private static void exit_park_all(){
-        for (Child c : system.getGuardians().get(0).getMyChildes().keySet()) {
-            exit_park_child(c.getId());
+        for (String childID : system.getGuardian().getMyChildes().keySet()) {
+            exit_park_child(childID);
         }
     }
 
     private static void exit_park_child(Scanner scan){
         try {
-            int id = Integer.parseInt(scan.toString());
-            if(system.getGuardians().get(0).getMyChildes().contains(id)){
-                exit_park_child(id);
-            }
+            String id = scan.toString();
+            exit_park_child(id);
         } catch (ClassCastException e){
             System.out.println("Please insert digits only");
         }
     }
 
-    private static void exit_park_child(int id){
-        if(system.getGuardians().get(0).getMyChildes().contains(id)){
-            Child c = system.getGuardians().get(0).getMyChildes().get(id);
+    private static void exit_park_child(String  id){
+        if(system.getGuardian().getMyChildes().containsKey(id)){
+            Child c = system.getGuardian().getMyChildes().get(id);
             double debt = c.getTicket().getDebt();
             System.out.println(String.format("child : %s child Id: %d has left the park, Debt: %.2f", c.getFirstName(), c.getId(), debt));
         }
@@ -120,7 +118,6 @@ public class Main {
     private static void enter_park(Scanner scan) {
 
         boolean manageMenu = true;
-        Guardian guardian = system.getGuardians().get(0);
         do {
             System.out.println("\t choose child to enter:");
             //printChilds();
@@ -236,77 +233,5 @@ public class Main {
         Child newChild = new Child(id,firstName,lastName,height,weight,age);
     }
 
-    public String childrenInPark()
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Child child : myChildes){
-            if (child.getBracelet()!=null){
-                stringBuilder.append(child.getFirstName());
-                stringBuilder.append(" ");
-                stringBuilder.append(child.getLastName());
-                stringBuilder.append(" id: ");
-                stringBuilder.append(child.getId());
-                stringBuilder.append("\n");
-            }
-        }
-        if (stringBuilder.isEmpty())
-            return "You have no children's in the Park";
-        return stringBuilder.toString();
-    }
-    public String childrenNotInPark()
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Child child : myChildes){
-            if (child.getBracelet()==null){
-                stringBuilder.append(child.getFirstName());
-                stringBuilder.append(" ");
-                stringBuilder.append(child.getLastName());
-                stringBuilder.append(" id: ");
-                stringBuilder.append(child.getId());
-                stringBuilder.append("\n");
-            }
-        }
-        if (stringBuilder.isEmpty())
-            return "You have no children's that can Enter The park ";
-        return stringBuilder.toString();
-    }
 
-    public String childrenInPark()
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Child child : myChildes){
-            if (child.getBracelet()!=null){
-                stringBuilder.append(child.getFirstName());
-                stringBuilder.append(" ");
-                stringBuilder.append(child.getLastName());
-                stringBuilder.append(" id: ");
-                stringBuilder.append(child.getId());
-                stringBuilder.append("\n");
-            }
-        }
-        if (stringBuilder.isEmpty())
-            return "You have no children's in the Park";
-        return stringBuilder.toString();
-
-    }
-    public String childrenNotInPark(Guardian guardian)
-    {
-
-        HashMap<String, Child> myChildes = guardian.getMyChildes();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String childID : myChildes.keySet()){
-            Child child = myChildes.get(childID);
-            if (child.getBracelet()==null){
-                stringBuilder.append(child.getFirstName());
-                stringBuilder.append(" ");
-                stringBuilder.append(child.getLastName());
-                stringBuilder.append(" id: ");
-                stringBuilder.append(child.getId());
-                stringBuilder.append("\n");
-            }
-        }
-        if (stringBuilder.isEmpty())
-            return "You have no children's that can Enter The park ";
-        return stringBuilder.toString();
-    }
 }

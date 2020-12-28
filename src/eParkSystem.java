@@ -1,39 +1,40 @@
 import java.util.*;
 
 public class eParkSystem {
-    private List<Device> Devices;
-    private HashMap<Integer,Guardian> Guardians;
-    private HashMap<Child, Guardian> Childs;
+    private static List<Device> devices;
+    private Guardian guardian;
+    private final HashMap<Child, Guardian> children;
 
     public eParkSystem(){
-        this.Devices = new LinkedList<>();
-        this.Childs = new HashMap<>();
-        this.Guardians = new HashMap<>();
+        devices = new LinkedList<>();
+        this.children = new HashMap<>();
     }
 
-    public HashMap<Integer,Guardian> getGuardians() {
-        return Guardians;
+    public static Device getDeviceByName(String deviceName){
+        for (Device device : devices){
+            if (device.getName().equals(deviceName)){
+                return device;
+            }
+        }
+        return null;
     }
+
 
     public List<Device> getDevices() {
-        return Devices;
+        return devices;
     }
 
     public HashMap<Child, Guardian> getChilds() {
-        return Childs;
-    }
-
-    public void addGuardian(Guardian g){
-        this.Guardians.put(g.getId(),g);
-    }
-
-    public void removeGuardian(Guardian g){
-        this.Guardians.remove(g);
+        return children;
     }
 
     public void addChild(Child c,Guardian g){
-        this.Childs.put(c,g);
+        this.children.put(c,g);
     }
 
-    public void addDevice(Device d){ this.Devices.add(d);}
+    public Guardian getGuardian() {
+        return guardian;
+    }
+
+    public void addDevice(Device d){ devices.add(d);}
 }

@@ -53,7 +53,7 @@ public class eTicket {
     }
 
     public void jumpOnRide(String rideName){
-        boolean b = eParkSystem.getDevice(rideName).rideOnDevice();
+        boolean b = eParkSystem.getDeviceByName(rideName).rideOnDevice(this);
 
         if(b){
             this.removeRide(rideName);

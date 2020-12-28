@@ -182,24 +182,58 @@ public class Main {
 
     private static void manage_ticket(Scanner scan) {
         boolean manageMenu = true;
-        do {
-            System.out.println("\t 1: Add ride");
-            System.out.println("\t 2: Remove ride");
-            String choice = scan.nextLine();
-            switch (choice) {
-                case "1": //Add Ride
-                    //Add_ride(scan, id);
-                    manageMenu = false;
-                    break;
-                case "2": //Remove Ride
-                    //Remove_ride(id);
-                    manageMenu = false;
-                    break;
+        boolean manage2Menu = true;
+        Child currentChild;
+        String input;
+        Device currentDevice;
+
+        while (manageMenu){
+            System.out.println("\t Please choose a Children");
+            System.out.println("\t 0: to Return to the Menu");
+            System.out.println(system.getGuardian().childrenInPark());
+            input = scan.nextLine();
+            if (input.equals("0")){
+                return;
             }
-
-            }while(manageMenu);
-
-
+            currentChild = system.getGuardian().getChildByID(input);
+            if (currentChild==null) {
+                System.out.println("Children ID Doesn't Exist");
+                continue;
+            }
+            while (manage2Menu)
+            {
+                System.out.println("\t Please choose a Device to add to the E-ticket");
+                System.out.println("\t 0: to Return to the Menu");
+                for (Device device : system.getDevices())
+                {
+                    if (device.canAddDevice(currentChild.getTicket()))
+                    System.out.printf("Device Name: %s Price: %s \n",device.getName(),device.getPrice());
+                }
+                input = scan.nextLine();
+                if (input.equals("0")){
+                    return;
+                }
+                currentDevice = eParkSystem.getDeviceByName(input);
+                if (currentDevice == null){
+                    System.out.println("Please Enter a Valid Device Name");
+                    continue;
+                }
+                if (system.getGuardian().getAmount() - currentDevice.getPrice() < 0){
+                    System.out.println("You Don't have Enough Credit in your Account");
+                    continue;
+                }
+                if (currentDevice instanceof extremeDevice){
+                    System.out.printf("%s is an Extreme Device would you like to add it? (Y/N) \n", currentDevice.getName());
+                    input = scan.nextLine();
+                    if (!input.equals("Y"))
+                        continue;
+                }
+                system.getGuardian().setAmount(-currentDevice.getPrice());
+                System.out.printf("Device %s added to %s E-Ticket",currentDevice.getName(),currentChild.getFirstName());
+                manage2Menu = false;
+            }
+            manageMenu=false;
+        }
     }
 
 

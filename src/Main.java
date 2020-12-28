@@ -43,17 +43,15 @@ public class Main {
     private static void InitGuardian() {
         System.out.println(" ⭐⭐⭐⭐ Welcome To Gashash Land ⭐⭐⭐⭐ \n ");
         System.out.println("Guardian Please enter the following details inorder to continue. ");
-        System.out.println("Please enter your Credit Card details:");
         boolean cardDetails = true;
         double amount=0;
         String cardnumber="";
-        do{
+        while (cardDetails){
             try{
                 System.out.println("Please enter your Credit Card number");
                 cardnumber = scan.nextLine();
                 if (!cardnumber.matches("[0-9]+")){
                     System.out.println("Card Number must contain only numbers,try again");
-                    cardDetails = !cardDetails;
                     throw new Exception("");
                 }
                 else{
@@ -61,20 +59,19 @@ public class Main {
                     amount = Double.parseDouble(scan.nextLine());
                     if (amount <=0){
                         System.out.println("Credit Card Declined by you company,try again");
-                        cardDetails = !cardDetails;
                         throw new Exception("");
-
                     }
                 }
-                cardDetails = !cardDetails;
+                cardDetails = false;
             }catch (Exception e){
                 System.out.println("Try Again!");
-                cardDetails = false;
+                cardDetails = true;
             }
-        }while(!cardDetails);
+        }
         System.out.println("\n Request Approved, Congrats!");
         Guardian guardian = new Guardian(cardnumber,amount);
         systemObjects.add(guardian);
+        system.setGuardian(guardian);
         System.out.println("Guardian Registered!");
     }
 
@@ -205,52 +202,47 @@ public class Main {
         int age=0;
         float height = 0,weight=0;
         boolean childAdd = true;
-        do {
+        while(childAdd){
             try {
                 System.out.println("Enter your first name:");
                 firstName = scan.nextLine();
                 if (!firstName.matches("[a-zA-Z]+")){
                     System.out.println("first name must contain only letters");
+                    throw new Exception("");
                 }
 
                 System.out.println("Enter your last name:");
                 lastName = scan.nextLine();
                 if (!lastName.matches("[a-zA-Z]+")){
                     System.out.println("Last name must contain only letters");
+                    throw new Exception("");
                 }
 
                 System.out.println("Enter your id:");
                 id = scan.nextLine();
                 if (!id.matches("[0-9]+")){
                     System.out.println("ID must contain only numbers");
-                    childAdd = false;
+                    throw new Exception("");
                 }
 
                 System.out.println("Enter child age:");
                 age = Integer.parseInt(scan.nextLine());
                 if( age <= 0 ){
                     System.out.println("age must be greater then zero,try again");
-                    childAdd = false;
+                    throw new Exception("");
                 }
-                System.out.println("Enter child height:");
-                height = Float.parseFloat(scan.nextLine());
-                if( height <= 0 ){
-                    System.out.println("height must be greater then zero,try again");
-                    childAdd = false;
-                }
-                System.out.println("Enter child weight:");
-                weight = Float.parseFloat(scan.nextLine());
-                if( weight <= 0 ){
-                    System.out.println("weight must be greater then zero,try again");
-                    childAdd = false;
-                }
-                childAdd= !childAdd;
+                childAdd= false;
             } catch (Exception e) {
                 System.out.println("Incorrect input,try again");
+                childAdd= true;
             }
-        }while (!childAdd);
+        }
+        RegisterationForm regForm = new RegisterationForm(firstName,lastName,id,age);
+        Child newChild = new Child(regForm.getId(),regForm.getFirstName(),regForm.getLastName(),regForm.getAge());
+        systemObjects.add(newChild);
+        // TODO : TOM - add eTicket creation with and ask for timelimit
+        System.out.println();
 
-        Child newChild = new Child(id,firstName,lastName,height,weight,age);
     }
 
 

@@ -248,8 +248,20 @@ public class Main {
         RegisterationForm regForm = new RegisterationForm(firstName,lastName,id,age);
         Child newChild = new Child(regForm.getId(),regForm.getFirstName(),regForm.getLastName(),regForm.getAge());
         systemObjects.add(newChild);
+        System.out.println(String.format("\n Final step guardian , please enter time limit in minutes(positive double) for {} :)", regForm.getFirstName()));
         // TODO : TOM - add eTicket creation with and ask for timelimit
-        System.out.println();
+        double timelimit;
+        try {
+            timelimit = Double.parseDouble(scan.nextLine());
+        }catch (Exception e){
+            System.out.println("Wrong time limit entered setting default time limit to 30 min");
+            timelimit = 30;
+        }
+        eTicket et = new eTicket(newChild.getId(),timelimit, newChild.getAge());
+        systemObjects.add(et);
+        newChild.setTicket(et);
+        system.getGuardian().addChild(newChild);
+        System.out.println("Child Added ! \n");
 
     }
 

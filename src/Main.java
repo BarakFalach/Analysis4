@@ -185,6 +185,7 @@ public class Main {
                     for(Child child : myChildren.values())
                         enter_child(child);
                     System.out.println("all your children entered the park");
+                    manageMenu = false;
                     break;
                 case "3":
                     manageMenu=false;

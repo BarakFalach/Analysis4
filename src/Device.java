@@ -8,6 +8,7 @@ public class Device {
     private final int minAge;
     private boolean isOpen;
 
+
     public Device(double minWeight, double minHeight, int minAge, boolean isOpen,String name,double price) {
 
         this.minWeight = minWeight;

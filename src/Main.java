@@ -6,6 +6,7 @@ public class Main {
     public static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
         InitDevices();
+        InitGuardian();
         String choise = null;
         do {
             System.out.println("Please press the requested option:");
@@ -38,8 +39,54 @@ public class Main {
         }while (!choise.equals("0")) ;
     }
 
+    private static void InitGuardian() {
+        System.out.println(" ⭐⭐⭐⭐ Welcome To Gashash Land ⭐⭐⭐⭐ \n ");
+        System.out.println("Guardian Please enter the following details inorder to continue. ");
+        System.out.println("Please enter your Credit Card details:");
+        boolean cardDetails = true;
+        double amount=0;
+        String cardnumber="";
+        do{
+            try{
+                System.out.println("Please enter your Credit Card number");
+                cardnumber = scan.nextLine();
+                if (!cardnumber.matches("[0-9]+")){
+                    System.out.println("Card Number must contain only numbers,try again");
+                    cardDetails = !cardDetails;
+                    throw new Exception("");
+                }
+                else{
+                    System.out.println("Please enter your Maximum amount you are willing to pay");
+                    amount = Double.parseDouble(scan.nextLine());
+                    if (amount <=0){
+                        System.out.println("Credit Card Declined by you company,try again");
+                        cardDetails = !cardDetails;
+                        throw new Exception("");
+
+                    }
+                }
+                cardDetails = !cardDetails;
+            }catch (Exception e){
+                System.out.println("Try Again!");
+                cardDetails = false;
+            }
+        }while(!cardDetails);
+        System.out.println("\n Request Approved, Congrats!");
+        Guardian guardian = new Guardian(cardnumber,amount);
+        systemObjects.add(guardian);
+        System.out.println("Guardian Registered!");
+    }
+
     private static void InitDevices() {
-        //Device mambaRide = new extremeDevice(40,1.4,12,true,"Mamba Ride",50);
+        Device mambaRide = new extremeDevice(0, 1.4,12,true,"Mamba Ride",50);
+        systemObjects.add(mambaRide);
+        system.addDevice(mambaRide);
+        Device GiantWheel = new Device(0,0,0,true,"Giant Wheel",30);
+        systemObjects.add(GiantWheel);
+        system.addDevice(GiantWheel);
+        Device Carrousel = new Device(0,0,8,true,"Carrousel",25);
+        systemObjects.add(Carrousel);
+        system.addDevice(Carrousel);
     }
 
     private static void exit_park_all(){

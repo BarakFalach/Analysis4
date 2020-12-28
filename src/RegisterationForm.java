@@ -1,6 +1,8 @@
 public class RegisterationForm {
-    private String firstName, lastName, id;
-    private int age;
+    private final String firstName;
+    private final String lastName;
+    private final String id;
+    private final int age;
 
     public RegisterationForm(String firstName,String lastName, String id,int age) {
         this.firstName = firstName;

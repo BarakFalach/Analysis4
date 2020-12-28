@@ -1,5 +1,5 @@
 import java.util.*;
-//TODO : 1 -
+import java.util.concurrent.TimeUnit;
 public class Main {
     public static List<Object> systemObjects = new LinkedList<>();
     public static eParkSystem system = new eParkSystem();
@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         InitDevices();
         InitGuardian();
-        String choise = null;
+        String choise;
         do {
             System.out.println("Please press the requested option:");
             System.out.println("\t1: Register child");
@@ -15,7 +15,7 @@ public class Main {
             System.out.println("\t3: Manage ticket");
             System.out.println("\t4: Jump on ride");
             System.out.println("\t5: Exit park");
-            System.out.println("\t0: Exit");
+            System.out.println("\tExit - type 'Exit'");
             choise = scan.nextLine();
 
             switch (choise) {
@@ -33,12 +33,15 @@ public class Main {
                 case "5": //Exit Park
                     exit_park(scan);
                     break;
-                case "0": //Exit
+                case "Exit": //Exit
+                    System.out.println("Bye...");
                     System.exit(0);
                     break;
                 }
-        }while (!choise.equals("0")) ;
+        }while (true) ;
     }
+
+
 
 
     private static void InitGuardian() {
@@ -49,27 +52,29 @@ public class Main {
         String cardnumber="";
         while (cardDetails){
             try{
-                System.out.println("Please enter your Credit Card number");
+                System.out.println("Please enter your Credit Card number:");
                 cardnumber = scan.nextLine();
                 if (!cardnumber.matches("[0-9]+")){
                     System.out.println("Card Number must contain only numbers,try again");
                     throw new Exception("");
                 }
                 else{
-                    System.out.println("Please enter your Maximum amount you are willing to pay");
+                    System.out.println("Please enter your Maximum amount you are willing to pay:");
                     amount = Double.parseDouble(scan.nextLine());
                     if (amount <=0){
                         System.out.println("Credit Card Declined by you company,try again");
                         throw new Exception("");
                     }
                 }
+                System.out.println("Checking card details ,please wait ...");
+                TimeUnit.SECONDS.sleep(2);
                 cardDetails = false;
             }catch (Exception e){
                 System.out.println("Try Again!");
                 cardDetails = true;
             }
         }
-        System.out.println("\n Request Approved, Congrats!");
+        System.out.println("\nCredit Card Request Approved, Congrats!");
         Guardian guardian = new Guardian(cardnumber,amount);
         systemObjects.add(guardian);
         system.setGuardian(guardian);
@@ -129,7 +134,7 @@ public class Main {
         if(system.getGuardian().getMyChildren().containsKey(id)){
             Child c = system.getGuardian().getMyChildren().get(id);
             double debt = c.getTicket().getDebt();
-            System.out.println(String.format("child : %s (child Id: %s) has left the park, Debt: %.2f", c.getFirstName(), c.getId(), debt));
+            System.out.printf("child : %s (child Id: %s) has left the park, Debt: %.2f%n", c.getFirstName(), c.getId(), debt);
         }
     }
 
@@ -208,7 +213,6 @@ public class Main {
         //Registration Form
         String firstName="", lastName="", id="";
         int age=0;
-        float height = 0,weight=0;
         boolean childAdd = true;
         while(childAdd){
             try {
@@ -232,6 +236,12 @@ public class Main {
                     System.out.println("ID must contain only numbers");
                     throw new Exception("");
                 }
+                for (Child c : system.getChilds().keySet()){
+                    if (c.getId().equals(id)){
+                        System.out.println("Child ID is already in the system");
+                        throw new Exception("");
+                    }
+                }
 
                 System.out.println("Enter child age:");
                 age = Integer.parseInt(scan.nextLine());
@@ -248,7 +258,7 @@ public class Main {
         RegisterationForm regForm = new RegisterationForm(firstName,lastName,id,age);
         Child newChild = new Child(regForm.getId(),regForm.getFirstName(),regForm.getLastName(),regForm.getAge());
         systemObjects.add(newChild);
-        System.out.println(String.format("\n Final step guardian , please enter time limit in minutes(positive double) for {} :)", regForm.getFirstName()));
+        System.out.printf("\n Final step guardian , please enter time limit in minutes(positive double) for %s :)%n", regForm.getFirstName());
         // TODO : TOM - add eTicket creation with and ask for timelimit
         double timelimit;
         try {

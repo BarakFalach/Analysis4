@@ -1,20 +1,22 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Guardian {
+
     private double amount;
     private String cardnumber;
-    private ArrayList<Child> myChildes;
+    private HashMap<String,Child> myChildes;
 
     public Guardian(String cardnumber, double amount) {
         this.cardnumber= cardnumber;
         this.amount = amount;
-        myChildes = new ArrayList<>();
+        myChildes = new HashMap<>();
     }
 
-
-    public ArrayList<Child> getMyChildes() {
+    public HashMap<String, Child> getMyChildes() {
         return myChildes;
     }
+
 
     public void setMyChildes(ArrayList<Child> myChildes) {
         if(myChildes==null)

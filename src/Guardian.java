@@ -1,17 +1,18 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Guardian {
     private int id;
-    private ArrayList<Child> myChildes;
+    private HashMap<String,Child> myChildes;
     //TODO credit card
 
     public Guardian(int id, Child child) {
         this.id = id;
-        myChildes = new ArrayList<>();
-        myChildes.add(child);
+        myChildes = new HashMap<>();
+        myChildes.put(child.getId(), child);
     }
 
-    public Guardian(int id, ArrayList<Child> myChildes) {
+    public Guardian(int id, HashMap<String, Child> myChildes) {
         this.id = id;
         this.myChildes = myChildes;
     }
@@ -20,7 +21,7 @@ public class Guardian {
         return id;
     }
 
-    public ArrayList<Child> getMyChildes() {
+    public HashMap<String, Child> getMyChildes() {
         return myChildes;
     }
 
@@ -28,7 +29,7 @@ public class Guardian {
         this.id = id;
     }
 
-    public void setMyChildes(ArrayList<Child> myChildes) {
+    public void setMyChildes(HashMap<String, Child> myChildes) {
         if(myChildes==null)
             return;
         this.myChildes = myChildes;

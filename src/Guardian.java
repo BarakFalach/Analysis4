@@ -4,17 +4,17 @@ import java.util.HashMap;
 public class Guardian {
 
     private double amount;
-    private String cardnumber;
-    private HashMap<String,Child> myChildes;
+    private String cardNumber;
+    private HashMap<String,Child> myChildren;
 
-    public Guardian(String cardnumber, double amount) {
-        this.cardnumber= cardnumber;
+    public Guardian(String cardNumber, double amount) {
+        this.cardNumber= cardNumber;
         this.amount = amount;
-        myChildes = new HashMap<>();
+        myChildren = new HashMap<>();
     }
 
     public HashMap<String, Child> getMyChildes() {
-        return myChildes;
+        return myChildren;
     }
 
     public boolean buyTicket(Child child, Device device, int numOfTicket){
@@ -24,8 +24,8 @@ public class Guardian {
     public String childrenInPark()
     {
         StringBuilder stringBuilder = new StringBuilder();
-        for (String childId : myChildes.keySet()){
-            Child child = myChildes.get(childId);
+        for (String childId : myChildren.keySet()){
+            Child child = myChildren.get(childId);
             if (child.getBracelet()!=null){
                 stringBuilder.append(child.getFirstName());
                 stringBuilder.append(" ");
@@ -35,7 +35,8 @@ public class Guardian {
                 stringBuilder.append("\n");
             }
         }
-        if (stringBuilder.toString().length()==0)
+        if (stringBuilder.length()==0)
+
             return "You have no children's in the Park";
         return stringBuilder.toString();
 
@@ -43,8 +44,8 @@ public class Guardian {
     public String childrenNotInPark()
     {
         StringBuilder stringBuilder = new StringBuilder();
-        for (String childID : myChildes.keySet()){
-            Child child = myChildes.get(childID);
+        for (String childID : myChildren.keySet()){
+            Child child = myChildren.get(childID);
             if (child.getBracelet()==null){
                 stringBuilder.append(child.getFirstName());
                 stringBuilder.append(" ");
@@ -54,10 +55,32 @@ public class Guardian {
                 stringBuilder.append("\n");
             }
         }
-        if (stringBuilder.toString().length()==0)
+        if (stringBuilder.length()==0)
+
             return "You have no children's that can Enter The park ";
         return stringBuilder.toString();
     }
+
+    public Child getChildByID(String childID){
+        if(myChildren.containsKey(childID))
+            return myChildren.get(childID);
+        return null;
+    }
+
+    public boolean addChild(Child child){
+        if(child == null)
+            return false;
+        for(Child existChild : myChildren.values()){
+            if(child.isEqual(existChild)){
+                return false;
+            }
+        }
+        myChildren.put(child.getId(), child);
+        return true;
+    }
+
+
+
 
 
 }

@@ -83,4 +83,10 @@ public class Child {
             return;
         this.ticket = ticket;
     }
+
+    public boolean isEqual(Child child){
+        if(child != null)
+            return this.id == child.id;
+        return false;
+    }
 }
